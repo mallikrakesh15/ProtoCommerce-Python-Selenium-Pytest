@@ -17,9 +17,7 @@ def browserInstances(request):
     if browser_name == "chrome":
         driver = webdriver.Chrome(executable_path=r'drivers\chromedriver.exe')
     elif browser_name == "firefox":
-        options = Options()
-        options.binary_location = r"drivers\firefox.exe"
-        driver = webdriver.Firefox(executable_path=r'drivers\geckodriver.exe',options=options)
+        driver = webdriver.Firefox(executable_path=r'drivers\geckodriver.exe')
     elif browser_name == "edge":
         driver = webdriver.Edge(executable_path=r'drivers\msedgedriver.exe')
     driver.maximize_window()
