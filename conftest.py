@@ -15,13 +15,13 @@ def browserInstances(request):
     global driver
     browser_name = request.config.getoption("browser_name")
     if browser_name == "chrome":
-        driver = webdriver.Chrome(executable_path=r'E:\TESTING\chromedriver.exe')
+        driver = webdriver.Chrome(executable_path=r'drivers\chromedriver.exe')
     elif browser_name == "firefox":
         options = Options()
-        options.binary_location = r"C:\Program Files\Mozilla Firefox\firefox.exe"
-        driver = webdriver.Firefox(executable_path=r'E:\TESTING\geckodriver.exe',options=options)
+        options.binary_location = r"drivers\firefox.exe"
+        driver = webdriver.Firefox(executable_path=r'drivers\geckodriver.exe',options=options)
     elif browser_name == "edge":
-        driver = webdriver.Edge(executable_path=r'E:\TESTING\msedgedriver.exe')
+        driver = webdriver.Edge(executable_path=r'drivers\msedgedriver.exe')
     driver.maximize_window()
     driver.implicitly_wait(5)
     yield driver
