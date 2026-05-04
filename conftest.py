@@ -4,7 +4,10 @@ import base64
 import pytest
 from pytest_html import extras
 from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.chromium.options import ChromiumOptions
+from selenium.webdriver.firefox.service import Service as FirefoxService
+from selenium.webdriver.edge.service import Service as EdgeService
 
 def pytest_addoption(parser):
     parser.addoption("--browser_name", action="store", default="chrome", help="Browser Selection")
@@ -15,11 +18,18 @@ def browserInstances(request):
     global driver
     browser_name = request.config.getoption("browser_name")
     if browser_name == "chrome":
-        driver = webdriver.Chrome(executable_path=r'drivers\chromedriver.exe')
+        service_obj = ChromeService(r'drivers\chromedriver.exe')
+        options = ChromiumOptions()
+        prefs = {"credentials_enable_service": False, "profile.password_manager_enabled": False,
+                 "profile.password_manager_leak_detection": False}
+        options.add_experimental_option("prefs", prefs)
+        driver = webdriver.Chrome(service=service_obj,options=options)
     elif browser_name == "firefox":
-        driver = webdriver.Firefox(executable_path=r'drivers\geckodriver.exe')
+        service_obj = FirefoxService(r'drivers\geckodriver.exe')
+        driver = webdriver.Firefox(service=service_obj)
     elif browser_name == "edge":
-        driver = webdriver.Edge(executable_path=r'drivers\msedgedriver.exe')
+        service_obj = EdgeService(r'drivers\msedgedriver.exe')
+        driver = webdriver.Edge(service=service_obj)
     driver.maximize_window()
     driver.implicitly_wait(5)
     yield driver
